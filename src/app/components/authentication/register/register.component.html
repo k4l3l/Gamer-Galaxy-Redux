@@ -1,0 +1,25 @@
+<h1>Register</h1>
+<form #regForm="ngForm" (ngSubmit)="register(regForm)">
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" ngModel name="email" class="form-control" id="email" aria-describedby="emailHelp" required placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+      <div class="form-group">
+        <label for="username">Your username</label>
+        <input type="username" ngModel name="username" class="form-control" id="username" aria-describedby="usernameHelp" required placeholder="Enter username">
+        <small id="usernameHelp" class="form-text text-muted">Enter a desired username.</small>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" ngModel #password name="password" class="form-control" id="password" required placeholder="Password">
+      </div>
+      <div class="form-group">
+        <label for="password2">Confirm Password</label>
+        <input type="password" ngModel #password2 name="password2" class="form-control" id="password2" required placeholder="Confirm Password">
+        <ng-container *ngIf="regForm.form.controls?.password?.touched && regForm.form.controls?.password2?.touched">
+          <small class="alert-danger" *ngIf="password?.value !== password2?.value">Both passwords must match</small>
+        </ng-container>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!regForm.form.valid || password?.value !== password2?.value">Register</button>
+</form>

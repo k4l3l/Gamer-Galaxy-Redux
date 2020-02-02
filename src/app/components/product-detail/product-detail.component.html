@@ -1,0 +1,7 @@
+<ng-container *ngIf="product$ | async as product">
+    <h1>Product details:</h1>
+    <h2>{{product.title}}</h2>
+    <img src="{{product.image}}" alt="..." class="img-thumbnail">
+    <p>Price: {{product.price | currency}}</p>
+</ng-container>
+    

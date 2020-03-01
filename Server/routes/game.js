@@ -1,6 +1,8 @@
 const express = require('express')
 const authCheck = require('../config/auth-check')
 const Game = require('../models/Game')
+const cors = require('cors')
+const corsObj = {origin: 'http://localhost:4200', credentials: true};
 
 const router = new express.Router()
 
@@ -16,9 +18,9 @@ function validateGameCreateForm(payload) {
     errors.name = 'Game name must be at least 3 symbols.'
   }
 
-  if (!payload || typeof payload.description !== 'string' || payload.description.length < 10 || payload.description.length > 200) {
+  if (!payload || typeof payload.description !== 'string' || payload.description.length < 10 || payload.description.length > 500) {
     isFormValid = false
-    errors.description = 'Description must be at least 10 symbols and less than 120 symbols.'
+    errors.description = 'Description must be at least 10 symbols and less than 500 symbols.'
   }
 
   if (!payload || !payload.price || payload.price < 0) {
@@ -42,7 +44,7 @@ function validateGameCreateForm(payload) {
   }
 }
 
-router.post('/create', authCheck, (req, res) => {
+router.post('/create', cors(corsObj), authCheck, (req, res) => {
   const GameObj = req.body;
   if (req.user.roles.indexOf('Admin') > -1) {
     const validationResult = validateGameCreateForm(GameObj)
@@ -53,6 +55,7 @@ router.post('/create', authCheck, (req, res) => {
         errors: validationResult.errors
       })
     }
+    GameObj.author = req.user.username;
 
     Game
       .create(GameObj)
@@ -82,7 +85,7 @@ router.post('/create', authCheck, (req, res) => {
   }
 })
 
-router.post('/edit/:id', authCheck, (req, res) => {
+router.post('/edit/:id', cors(corsObj), authCheck, (req, res) => {
   if (req.user.roles.indexOf('Admin') > -1) {
     const GameId = req.params.id
     const GameObj = req.body
@@ -99,7 +102,6 @@ router.post('/edit/:id', authCheck, (req, res) => {
       .findById(GameId)
       .then(existingGame => {
         existingGame.title = GameObj.title
-        existingGame.author = GameObj.author
         existingGame.genres = GameObj.genres
         existingGame.description = GameObj.description
         existingGame.price = GameObj.price
@@ -185,7 +187,7 @@ router.get('/:id', (req,res) => {
     })
 })
 
-router.post('/review/:id', authCheck, (req, res) => {
+router.post('/review/:id', cors(corsObj), authCheck, (req, res) => {
   const id = req.params.id
   const review = req.body.review
   const username = req.user.username
@@ -244,7 +246,7 @@ router.post('/review/:id', authCheck, (req, res) => {
     })
 })
 
-router.post('/like/:id', authCheck, (req, res) => {
+router.post('/like/:id', cors(corsObj), authCheck, (req, res) => {
   const id = req.params.id
   const username = req.user.username
   Game
@@ -291,7 +293,7 @@ router.post('/like/:id', authCheck, (req, res) => {
     })
 })
 
-router.post('/unlike/:id', authCheck, (req, res) => {
+router.post('/unlike/:id', cors(corsObj), authCheck, (req, res) => {
   const id = req.params.id
   const username = req.user.username
   Game
@@ -340,21 +342,17 @@ router.post('/unlike/:id', authCheck, (req, res) => {
     })
 })
 
-router.delete('/delete/:id', authCheck, (req, res) => {
+router.delete('/delete/:id', cors(corsObj), authCheck, (req, res) => {
   const id = req.params.id
   if (req.user.roles.indexOf('Admin') > -1) {
     Game
-      .findById(id)
-      .then((Game) => {
-        Game
-          .remove()
-          .then(() => {
-            return res.status(200).json({
-              success: true,
-              message: 'Game deleted successfully!'
-            })
-          })
-      })
+      .findOneAndDelete(id)      
+      .then(() => {
+        return res.status(200).json({
+          success: true,
+          message: 'Game deleted successfully!'
+        })
+      })      
       .catch(() => {
         return res.status(200).json({
           success: false,
@@ -362,7 +360,7 @@ router.delete('/delete/:id', authCheck, (req, res) => {
         })
       })
   } else {
-    return res.status(200).json({
+    return res.status(401).json({
       success: false,
       message: 'Invalid credentials!'
     })

@@ -16,11 +16,14 @@ import { reducers } from './+store';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './+store/auth/effects';
 import { ProdEffects } from './+store/product/effects';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './components/shared/shared.module';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { AppRouterSerializer } from './core/app-router-serializer';
+import { ProductCreateComponent } from './components/product-create/product-create.component';
+import { DeleteProductDialogComponent } from './components/delete-product-dialog/delete-product-dialog.component';
+import { ConnectFormDirective } from './core/directives/connect-form-directive';
 
 
 @NgModule({
@@ -31,12 +34,16 @@ import { AppRouterSerializer } from './core/app-router-serializer';
     HomeComponent,
     ProductComponent,
     ProductDetailComponent,
+    ProductCreateComponent,
+    DeleteProductDialogComponent,
+    ConnectFormDirective
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([
@@ -50,6 +57,7 @@ import { AppRouterSerializer } from './core/app-router-serializer';
     SharedModule,
   ],
   providers: [],
+  entryComponents: [DeleteProductDialogComponent,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

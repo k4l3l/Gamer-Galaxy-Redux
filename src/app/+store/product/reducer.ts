@@ -1,4 +1,4 @@
-import { ActionTypes, Actions, GetLatestSuccess, GetLatestFailed, LoadProduct, LoadProductSuccess, LoadProductFailed } from './actions';
+import * as actns from './actions';
 import { Product } from 'src/app/shared/interfaces';
 
 
@@ -14,26 +14,60 @@ const initialState: IState = {
     selectedProduct: null,
 };
 
-export function reducer(state = initialState, action: Actions): IState {
+export function reducer(state = initialState, action: actns.Actions): IState {
     switch (action.type) {
 
-        case ActionTypes.GetLatestSuccess: {
-            const { products } = (action as GetLatestSuccess).payload;
+        case actns.ActionTypes.GetLatestSuccess: {
+            const { products } = (action as actns.GetLatestSuccess).payload;
             return { ...state, products };
         }
 
-        case ActionTypes.GetLatestFailed: {
-            const { error } = (action as GetLatestFailed).payload;
+        case actns.ActionTypes.GetLatestFailed: {
+            const { error } = (action as actns.GetLatestFailed).payload;
             return { ...state, errorMessage: error.message };
         }
 
-        case ActionTypes.LoadProductSuccess: {
-            const { product } = (action as LoadProductSuccess).payload;
+        case actns.ActionTypes.LoadProductSuccess: {
+            const { product } = (action as actns.LoadProductSuccess).payload;
             return { ...state, selectedProduct: product };
         }
 
-        case ActionTypes.LoadProductFailed: {
-            const { error } = (action as LoadProductFailed).payload;
+        case actns.ActionTypes.LoadProductFailed: {
+            // Create toast message?
+            const { error } = (action as actns.LoadProductFailed).payload;
+            return { ...state, errorMessage: error.message };
+        }
+
+        case actns.ActionTypes.ClearProduct: {
+            return { ...state, selectedProduct: null };
+        }
+
+        case actns.ActionTypes.CreateProductSuccess: {
+            return state;
+        }
+
+        case actns.ActionTypes.CreateProductFailed: {
+            const { error } = (action as actns.EditProductFailed).payload;
+            return { ...state, errorMessage: error.message };
+        }
+
+        case actns.ActionTypes.EditProductSuccess: {
+            return state;
+        }
+
+        case actns.ActionTypes.EditProductFailed: {
+            const { error } = (action as actns.EditProductFailed).payload;
+            return { ...state, errorMessage: error.message };
+        }
+
+        case actns.ActionTypes.DeleteProductSuccess: {
+            const { id } = (action as actns.DeleteProductSuccess).payload;
+            const products = state.products.filter(p => p._id !== id);
+            return { ...state, products };
+        }
+
+        case actns.ActionTypes.DeleteProductFailed: {
+            const { error } = (action as actns.DeleteProductFailed).payload;
             return { ...state, errorMessage: error.message };
         }
 

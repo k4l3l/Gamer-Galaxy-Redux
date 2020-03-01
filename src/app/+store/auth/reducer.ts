@@ -5,20 +5,23 @@ export interface IState {
     username: string;
     errorMessage: string;
     isAdmin: boolean;
+    roles: string[];
 }
 
 const initialState: IState = {
     username: null,
     errorMessage: null,
     isAdmin: false,
+    roles: [],
 };
 
 export function reducer(state = initialState, action: Actions): IState {
     switch (action.type) {
 
         case ActionTypes.LoginSuccess: {
-            const { username } = (action as LoginSuccess).payload;
-            return { ...state, username };
+            const { username, roles } = (action as LoginSuccess).payload;
+            const isAdmin = roles.indexOf('Admin') > -1;
+            return { ...state, username, roles, isAdmin };
         }
 
         case ActionTypes.LoginFailed: {

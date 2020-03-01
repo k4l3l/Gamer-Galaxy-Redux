@@ -1,5 +1,5 @@
 <h1>Register</h1>
-<form #regForm="ngForm" (ngSubmit)="register(regForm)">
+<form #regForm="ngForm" (ngSubmit)="register(regForm.value)">
     <div class="form-group">
         <label for="email">Email address</label>
         <input type="email" ngModel name="email" class="form-control" id="email" aria-describedby="emailHelp" required placeholder="Enter email">

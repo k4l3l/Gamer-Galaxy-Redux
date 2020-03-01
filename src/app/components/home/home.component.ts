@@ -10,6 +10,7 @@ import { GetLatest } from 'src/app/+store/product/actions';
 })
 export class HomeComponent implements OnInit {
 
+
   constructor(private store: Store<IAppState>) { }
   
   products$ = this.store.select(getProducts);
@@ -18,5 +19,4 @@ export class HomeComponent implements OnInit {
     this.store.dispatch(new GetLatest());
   }
   
-
 }

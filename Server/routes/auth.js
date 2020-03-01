@@ -24,9 +24,9 @@ function validateSignupForm (payload) {
     errors.email = 'Please provide a correct email address'
   }
 
-  if (!payload || typeof payload.password !== 'string' || payload.password.trim().length < 8) {
+  if (!payload || typeof payload.password !== 'string' || payload.password.trim().length < 4) {
     isFormValid = false
-    errors.password = 'Password must be at least 8 characters long'
+    errors.password = 'Password must be at least 4 characters long'
   }
 
   if (!isFormValid) {
@@ -126,7 +126,7 @@ router.post('/login', (req, res, next) => {
     //   message: 'You have successfully logged in!',      
     //   user: userData
     // })
-    res.cookie('token', token, { expires: new Date(360000 + Date.now()), httpOnly: true }).send({
+    res.cookie('token', token, { expires: new Date(3600000 + Date.now()), httpOnly: true }).send({
       success: true,
         message: 'You have successfully logged in!',      
         user: userData

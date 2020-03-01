@@ -1,4 +1,4 @@
 <h1>Latest products:</h1>
-<div class="row row-cols-1 row-cols-md-3">
+<div class="row row-cols-1 row-cols-md-3">   
     <app-product *ngFor="let product of (products$ | async)" [data]="product"></app-product>
 </div>

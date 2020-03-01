@@ -1,0 +1,63 @@
+<ng-container *ngIf="product$ | async; then editForm else createForm"></ng-container>
+
+<ng-template #createForm>
+<h1>Create new product</h1>
+<form [formGroup]="prodForm" (ngSubmit)="create()">
+    <div class="form-group">
+        <label for="title">Title</label>
+    <input type="text" formControlName="title" class="form-control" id="title" aria-describedby="titleHelp"  placeholder="Enter a title">
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" formControlName="description" class="form-control" id="description" aria-describedby="descriptionHelp"  placeholder="Enter description">
+      </div>
+      <div class="form-group">
+        <label for="image">Image</label>
+        <input type="text" formControlName="image" class="form-control" id="image"  placeholder="url">
+      </div>
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input type="number" formControlName="price" class="form-control" id="price" placeholder="0">        
+      </div>
+      <input type="button" class="btn btn-primary" (click)="addGenre()" value="Add genre">
+      <input type="button" *ngIf="prodForm.controls.genres.controls[1]" class="btn btn-primary" (click)="removeGenre()" value="Remove Genre">
+      <div formArrayName="genres" *ngFor="let item of prodForm.get('genres').controls; let i = index;">        
+        <div [formGroupName]="i" class="form-group">
+        <label for="genre">Genre {{i+1}}</label>
+            <input type="text" formControlName="genre" class="form-control" placeholder="genre name">            
+        </div>        
+      </div>      
+      <button type="submit" class="btn btn-primary" [disabled]="prodForm.invalid">Create</button>
+</form>
+</ng-template>
+
+<ng-template #editForm>
+  <h1>Edit product</h1>
+<form [formGroup]="prodForm" [connectForm]="product$ | async" (ngSubmit)="edit()">
+    <div class="form-group">
+        <label for="title">Title</label>
+    <input type="text" formControlName="title" class="form-control" id="title" aria-describedby="titleHelp"  placeholder="Enter a title" value="">
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" formControlName="description" class="form-control" id="description" aria-describedby="descriptionHelp" >
+      </div>
+      <div class="form-group">
+        <label for="image">Image</label>
+        <input type="text" formControlName="image" class="form-control" id="image" >
+      </div>
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input type="number" formControlName="price" class="form-control" id="price" >        
+      </div>
+      <input type="button" class="btn btn-primary" (click)="addGenre()" value="Add genre">
+      <input type="button" *ngIf="prodForm.controls.genres.controls[1]" class="btn btn-primary" (click)="removeGenre()" value="Remove Genre">
+      <div formArrayName="genres" *ngFor="let item of prodForm.get('genres').controls; let i = index;">        
+        <div [formGroupName]="i" class="form-group">
+        <label for="genre">Genre {{i+1}}</label>
+            <input type="text" formControlName="genre" class="form-control" placeholder="genre name">            
+        </div>        
+      </div>      
+      <button type="submit" class="btn btn-primary" [disabled]="prodForm.invalid">Edit</button>
+</form>
+</ng-template>

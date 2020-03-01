@@ -24,7 +24,7 @@ export class AuthEffects {
             map(({ message }) => {
                 return new actions.RegisterSuccess({ message });
             }),
-            tap(() => this.router.navigate['/login']),
+            tap(() => this.router.navigate(['/login'])),
             catchError((err) => [new actions.RegisterFailed(err)])
         ))
     );

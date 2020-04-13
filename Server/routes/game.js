@@ -85,7 +85,7 @@ router.post('/create', cors(corsObj), authCheck, (req, res) => {
   }
 })
 
-router.post('/edit/:id', cors(corsObj), authCheck, (req, res) => {
+router.patch('/edit/:id', cors(corsObj), authCheck, (req, res) => {
   if (req.user.roles.indexOf('Admin') > -1) {
     const GameId = req.params.id
     const GameObj = req.body
@@ -346,7 +346,7 @@ router.delete('/delete/:id', cors(corsObj), authCheck, (req, res) => {
   const id = req.params.id
   if (req.user.roles.indexOf('Admin') > -1) {
     Game
-      .findOneAndDelete(id)      
+      .findByIdAndDelete(id)
       .then(() => {
         return res.status(200).json({
           success: true,

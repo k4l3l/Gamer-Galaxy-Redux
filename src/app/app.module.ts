@@ -24,6 +24,8 @@ import { AppRouterSerializer } from './core/app-router-serializer';
 import { ProductCreateComponent } from './components/product-create/product-create.component';
 import { DeleteProductDialogComponent } from './components/delete-product-dialog/delete-product-dialog.component';
 import { ConnectFormDirective } from './core/directives/connect-form-directive';
+import { AuthGuard } from './core/guards/auth-guard';
+import { AdminGuard } from './core/guards/admin-guard';
 
 
 @NgModule({
@@ -36,7 +38,7 @@ import { ConnectFormDirective } from './core/directives/connect-form-directive';
     ProductDetailComponent,
     ProductCreateComponent,
     DeleteProductDialogComponent,
-    ConnectFormDirective
+    ConnectFormDirective,
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,7 @@ import { ConnectFormDirective } from './core/directives/connect-form-directive';
     StoreDevtoolsModule.instrument({}),
     SharedModule,
   ],
-  providers: [],
+  providers: [ AuthGuard, AdminGuard ],
   entryComponents: [DeleteProductDialogComponent,],
   bootstrap: [AppComponent]
 })

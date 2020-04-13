@@ -1,4 +1,2 @@
-import { IState } from './reducer';
+import { ProductsState } from './reducer';
 
-export const getProducts = (state: IState) => state.products;
-export const getProduct = (state: IState) => state.selectedProduct;

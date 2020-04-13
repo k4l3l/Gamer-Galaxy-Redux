@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IAppState, getProduct } from 'src/app/+store';
+import { IAppState } from 'src/app/+store';
 import { Store } from '@ngrx/store';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { CreateProduct, LoadProduct, ClearProduct } from 'src/app/+store/product/actions';
+import { ProductCreated, ProductRequested, ProductEdited } from 'src/app/+store/product/actions';
 import { Product } from 'src/app/shared/interfaces';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 
 
 
@@ -14,7 +13,7 @@ import { Observable } from 'rxjs';
   templateUrl: './product-create.component.html',
   styleUrls: ['./product-create.component.css']
 })
-export class ProductCreateComponent implements OnInit, OnDestroy {
+export class ProductCreateComponent implements OnInit {
   prodForm: FormGroup;
   genres: FormArray;
   constructor(
@@ -22,24 +21,26 @@ export class ProductCreateComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private route: ActivatedRoute
     ) {  }
-  product$: Observable<Product>;
+  product: Product;
 
   ngOnInit() {
     // Temporal fix for the two forms
-    const _isEdit: boolean = this.route.snapshot.url[1].toString() === 'edit';
-    if (_isEdit) {
-      this.store.dispatch(new LoadProduct());
-      this.product$ = this.store.select(getProduct);
-    }
-
+    this.route.data.subscribe( ({ product }) => this.product = product);
     this.prodForm = this.fb.group({
-      title: ['', [ Validators.required, Validators.minLength(3) ]],
-      description: ['', [Validators.required]],
-      price: ['', [Validators.required, Validators.min(1)]],
-      image: ['', [Validators.required]],
-      genres: _isEdit ? this.fb.array([], Validators.required)
-      : this.fb.array([this.createGenre()], Validators.required),
+      title: [ '', [ Validators.required, Validators.minLength(3) ]],
+      description: [ '', [Validators.required]],
+      price: [ '', [Validators.required, Validators.min(1)]],
+      image: [ '', [Validators.required]],
+      genres: this.fb.array([this.createGenre()], Validators.required),
     });
+    this.genres = this.prodForm.get('genres') as FormArray;
+    if (this.product) {
+      this.prodForm.patchValue(this.product);
+      this.genres.removeAt(0);
+      this.product.genres.forEach(e => this.genres.push(this.fb.group({
+        genre: [e , [Validators.required]]
+      })));
+    }
 
   }
 
@@ -50,7 +51,6 @@ export class ProductCreateComponent implements OnInit, OnDestroy {
   }
 
   addGenre() {
-    this.genres = this.prodForm.get('genres') as FormArray;
     this.genres.push(this.createGenre());
   }
 
@@ -62,17 +62,12 @@ export class ProductCreateComponent implements OnInit, OnDestroy {
 
   create() {
     this.prodForm.value.genres = this.prodForm.value.genres.map(obj => obj.genre);
-    this.store.dispatch(new CreateProduct(this.prodForm.value));
+    this.store.dispatch(new ProductCreated(this.prodForm.value));
   }
 
   edit() {
-
-  }
-
-  ngOnDestroy() {
-    if (this.route.snapshot.url[1].toString() === 'edit') {
-      this.store.dispatch(new ClearProduct());
-    }
+    this.prodForm.value.genres = this.prodForm.value.genres.map(obj => obj.genre);
+    this.store.dispatch(new ProductEdited({ product: { ...this.prodForm.value, _id: this.product._id } }));
   }
 
 }

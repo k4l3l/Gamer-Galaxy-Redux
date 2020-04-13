@@ -24,8 +24,8 @@ export class ProductService {
     }
 
     edit(data) {
-        const { _id: id } = data;
-        return this.http.post<{ product: any, message: string, errors: any }>(ROUTE + 'edit/' + id, data, optionsObj);
+        const { _id: id } = data.product;
+        return this.http.patch<{ product: any, message: string, errors: any }>(ROUTE + 'edit/' + id, data.product, optionsObj);
     }
 
     remove(id: string) {

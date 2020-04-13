@@ -1,107 +1,101 @@
 import { IAction } from 'src/app/shared/interfaces';
 import { Product } from 'src/app/shared/interfaces';
 
-export const ActionTypes = {
-  GetLatest: '[PROD] Get Latest Games',
-  GetLatestSuccess: '[PROD] Get Latest Games Success',
-  GetLatestFailed: '[PROD] Get Latest Games Failed',
-  LoadProduct: '[PROD] Load Product',
-  LoadProductSuccess: '[PROD] Load Product Success',
-  LoadProductFailed: '[PROD] Load Product Failed',
-  ClearProduct: '[PROD] Clear Product',
-  CreateProduct: '[PROD] Create Product',
-  CreateProductSuccess: '[PROD] Create Product Success',
-  CreateProductFailed: '[PROD] Create Product Failed',
-  EditProduct: '[PROD] Edit Product',
-  EditProductSuccess: '[PROD] Edit Product Success',
-  EditProductFailed: '[PROD] Edit Product Failed',
-  DeleteProduct: '[PROD] Delete Product',
-  DeleteProductSuccess: '[PROD] Delete Success',
-  DeleteProductFailed: '[PROD] Delete Failed',
-};
+export enum ActionTypes {
+  LatestRequested = '[Home Component] Latest Requested',
+  LatestLoadedSuccess = '[Product API] Latest Loaded Success',
+  LatestLoadedFailed = '[Product API] Latest Loaded Failed',
+  ProductRequested = '[Product Details Component] Product Requested',
+  ProductLoadedSuccess = '[Product API] Product Loaded Success',
+  ProductLoadedFailed = '[Product API] Product Loaded Failed',
+  ProductCreated = '[Product Create Component] Product Created',
+  ProductCreatedSuccess = '[Product API] Product Created Success',
+  ProductCreatedFailed = '[Product API] Product Created Failed',
+  ProductEdited = '[Edit Product Component] Product Edited',
+  ProductEditedSuccess = '[Product API] Product Edited Success',
+  ProductEditedFailed = '[Product API] Product Edited Failed',
+  ProductDeleted = '[Delete Product Dialog] Product Deleted',
+  ProductDeletedSuccess = '[Product API] Product Delete Success',
+  ProductDeletedFailed = '[Product API] Product Delete Failed',
+}
 
-export class GetLatest implements IAction<null> {
-    type = ActionTypes.GetLatest;
+export class LatestRequested implements IAction<null> {
+    type = ActionTypes.LatestRequested;
     constructor(public payload: null = null) { }
 }
 
-export class GetLatestSuccess implements IAction<{ products: Product[] }> {
-    type = ActionTypes.GetLatestSuccess;
+export class LatestLoadedSuccess implements IAction<{ products: Product[] }> {
+    type = ActionTypes.LatestLoadedSuccess;
     constructor(public payload: { products: Product[] } ) { }
 }
 
-export class GetLatestFailed implements IAction<{ error: any }> {
-    type = ActionTypes.GetLatestFailed;
+export class LatestLoadedFailed implements IAction<{ error: any }> {
+    type = ActionTypes.LatestLoadedFailed;
     constructor(public payload: { error: any }) { }
 }
 
-export class LoadProduct implements IAction<null> {
-    type = ActionTypes.LoadProduct;
+export class ProductRequested implements IAction<null> {
+    type = ActionTypes.ProductRequested;
     constructor(public payload: null = null) { }
 }
 
-export class LoadProductSuccess implements IAction<{ product: Product }> {
-    type = ActionTypes.LoadProductSuccess;
+export class ProductLoadedSuccess implements IAction<{ product: Product }> {
+    type = ActionTypes.ProductLoadedSuccess;
     constructor(public payload: { product: Product }) { }
 }
 
-export class LoadProductFailed implements IAction<{ error: any }> {
-    type = ActionTypes.LoadProductFailed;
+export class ProductLoadedFailed implements IAction<{ error: any }> {
+    type = ActionTypes.ProductLoadedFailed;
     constructor(public payload: { error: any }) { }
 }
 
-export class ClearProduct implements IAction<null> {
-    type = ActionTypes.ClearProduct;
-    constructor(public payload: null = null) { }
-}
-
-export class CreateProduct implements IAction<{product: any}> {
-    type = ActionTypes.CreateProduct;
+export class ProductCreated implements IAction<{product: any}> {
+    type = ActionTypes.ProductCreated;
     constructor(public payload: {product: any}) { }
 }
 
-export class CreateProductSuccess implements IAction<{ message: string, product: Product, errors: any }> {
-    type = ActionTypes.CreateProductSuccess;
+export class ProductCreatedSuccess implements IAction<{ message: string, product: Product, errors: any }> {
+    type = ActionTypes.ProductCreatedSuccess;
     constructor(public payload: { message: string, product: Product, errors: any }) { }
 }
 
-export class CreateProductFailed implements IAction<{ error: any }> {
-    type = ActionTypes.CreateProductFailed;
+export class ProductCreatedFailed implements IAction<{ error: any }> {
+    type = ActionTypes.ProductCreatedFailed;
     constructor(public payload: { error: any }) { }
 }
 
-export class EditProduct implements IAction<{product: any}> {
-    type = ActionTypes.EditProduct;
-    constructor(public payload: {product: any}) { }
+export class ProductEdited implements IAction<{product: Product}> {
+    type = ActionTypes.ProductEdited;
+    constructor(public payload: {product: Product}) { }
 }
 
-export class EditProductSuccess implements IAction<{ message: string, product: Product, errors: any }> {
-    type = ActionTypes.EditProductSuccess;
-    constructor(public payload: { message: string, product: Product, errors: any }) { }
+export class ProductEditedSuccess implements IAction<{ message: string, product: Product }> {
+    type = ActionTypes.ProductEditedSuccess;
+    constructor(public payload: { message: string, product: Product }) { }
 }
 
-export class EditProductFailed implements IAction<{ error: any }> {
-    type = ActionTypes.EditProductFailed;
+export class ProductEditedFailed implements IAction<{ error: any }> {
+    type = ActionTypes.ProductEditedFailed;
     constructor(public payload: { error: any }) { }
 }
 
-export class DeleteProduct implements IAction<{ id: string }> {
-    type = ActionTypes.DeleteProduct;
+export class ProductDeleted implements IAction<{ id: string }> {
+    type = ActionTypes.ProductDeleted;
     constructor(public payload: { id: string }) { }
 }
 
-export class DeleteProductSuccess implements IAction<{ id: string }> {
-    type = ActionTypes.DeleteProductSuccess;
+export class ProductDeletedSuccess implements IAction<{ id: string }> {
+    type = ActionTypes.ProductDeletedSuccess;
     constructor(public payload: { id: string }) { }
 }
 
-export class DeleteProductFailed implements IAction<{ error: any }> {
-    type = ActionTypes.DeleteProductFailed;
+export class ProductDeletedFailed implements IAction<{ error: any }> {
+    type = ActionTypes.ProductDeletedFailed;
     constructor(public payload: { error: any }) { }
 }
 
-export type Actions =  GetLatest | GetLatestSuccess | GetLatestFailed |
-                    LoadProduct | LoadProductSuccess | LoadProductFailed | ClearProduct |
-                    CreateProduct | CreateProductSuccess | CreateProductFailed |
-                    DeleteProduct | DeleteProductSuccess | DeleteProductFailed |
-                    EditProduct | EditProductSuccess | EditProductFailed;
+export type Actions =  LatestRequested | LatestLoadedSuccess | LatestLoadedFailed |
+                    ProductRequested | ProductLoadedSuccess | ProductLoadedFailed |
+                    ProductCreated | ProductCreatedSuccess | ProductCreatedFailed |
+                    ProductDeleted | ProductDeletedSuccess | ProductDeletedFailed |
+                    ProductEdited | ProductEditedSuccess | ProductEditedFailed;

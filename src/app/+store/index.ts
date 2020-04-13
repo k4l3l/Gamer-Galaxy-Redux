@@ -1,5 +1,5 @@
 import { reducer as authReducer, IState as IAuthState } from './auth/reducer';
-import { reducer as prodReducer, IState as IProdState } from './product/reducer';
+import { reducer as prodReducer, ProductsState } from './product/reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as auth from './auth/selectors';
 import * as prod from './product/selectors';
@@ -8,7 +8,7 @@ import { routerReducer, RouterReducerState, getSelectors } from '@ngrx/router-st
 
 export interface IAppState {
     auth: IAuthState;
-    prod: IProdState;
+    prod: ProductsState;
     router: RouterReducerState<RouterStateUrl>;
 }
 
@@ -27,9 +27,22 @@ export const getAuthIsAdmin = createSelector(getAuthStore, auth.getIsAdmin);
 
 /* Product Selectors */
 
-export const getProductStore = createFeatureSelector('prod');
-export const getProducts = createSelector(getProductStore, prod.getProducts);
-export const getProduct = createSelector(getProductStore, prod.getProduct);
+export const createProductSelectors = createFeatureSelector<ProductsState>('prod');
+export const selectProductById = (productId: string) => createSelector(
+    createProductSelectors,
+    (state: ProductsState) => state.entities[productId]
+);
+export const selectLatest = createSelector(
+    createProductSelectors,
+    (state: ProductsState) => {
+        return state.latestProducts; }
+);
+
+export const selectLoadingIndicator = createSelector(
+    createProductSelectors,
+    productState => productState.isLoading
+);
+
 
 /* Route Selectors */
 

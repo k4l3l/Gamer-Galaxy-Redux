@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ModalProviderService } from 'src/app/core/services/modal-provider.service';
 import { IAppState } from 'src/app/+store';
 import { Store } from '@ngrx/store';
-import { DeleteProduct } from 'src/app/+store/product/actions';
+import { ProductDeleted } from 'src/app/+store/product/actions';
 
 @Component({
   selector: 'app-delete-product-dialog',
@@ -24,7 +24,8 @@ export class DeleteProductDialogComponent {
 
   remove() {
     const id = this.inputs.product._id;
-    this.store.dispatch(new DeleteProduct({ id }));
+    console.log(id);
+    this.store.dispatch(new ProductDeleted({ id }));
     this.close();
   }
 

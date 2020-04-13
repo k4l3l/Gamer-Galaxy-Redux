@@ -5,14 +5,17 @@ import { RegisterComponent } from './components/authentication/register/register
 import { HomeComponent } from './components/home/home.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductCreateComponent } from './components/product-create/product-create.component';
+import { ProductResolver } from './core/services/product-resolver';
+import { AuthGuard } from './core/guards/auth-guard';
+import { AdminGuard } from './core/guards/admin-guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'product/create', component: ProductCreateComponent },
-  { path: 'product/edit/:id', component: ProductCreateComponent },
-  { path: 'product/:id', component: ProductDetailComponent },
+  { path: 'login', component: LoginComponent, canActivate: [ AuthGuard ] },
+  { path: 'register', component: RegisterComponent, canActivate: [ AuthGuard ] },
+  { path: 'product/create', component: ProductCreateComponent, canActivate: [ AdminGuard ] },
+  { path: 'product/edit/:id', component: ProductCreateComponent, resolve: { product: ProductResolver }, canActivate: [ AdminGuard ] },
+  { path: 'product/:id', component: ProductDetailComponent, resolve: { product: ProductResolver } },
   { path: '**', redirectTo: '/' }
 ];
 

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { IAppState, selectLoadingIndicator } from 'src/app/+store';
+import { Store, select } from '@ngrx/store';
 
 @Component({
   selector: 'app-content',
@@ -7,9 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContentComponent implements OnInit {
 
-  constructor() { }
+  loading$ = this.store.pipe(select(selectLoadingIndicator));
 
-  ngOnInit() {
-  }
+  constructor(private store: Store<IAppState>) {  }
+
+  ngOnInit() { }
 
 }

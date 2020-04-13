@@ -11,7 +11,7 @@ export interface IState {
 const initialState: IState = {
     username: null,
     errorMessage: null,
-    isAdmin: false,
+    isAdmin: null,
     roles: [],
 };
 
@@ -31,7 +31,7 @@ export function reducer(state = initialState, action: Actions): IState {
 
         case ActionTypes.LogoutSuccess: {
             const { message } = (action as LogoutSuccess).payload;
-            return { ...initialState, errorMessage: message };
+            return { ...initialState, username: undefined, errorMessage: message };
         }
 
         case ActionTypes.AuthCheckSuccess: {

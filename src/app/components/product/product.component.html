@@ -4,11 +4,14 @@
         <div class="card-body">
           <h5 class="card-title">{{data.title}}</h5>
           <p class="card-text">{{data.description}}</p>
-        <a routerLink="/product/{{data._id}}" class="btn btn-primary">Details</a>
+          <p class="card-text">Price: {{data.price | currency}}</p>
+        <button class="btn btn-primary" (click)="details($event)" [attr.disabled]=" isClicked ? 'disabled' : null">
+          <span [ngClass]="{ 'spinner-grow spinner-grow-sm' : isClicked }" role="status" aria-hidden="true"></span>
+          Details</button>
         <ng-container *ngIf="isAdmin$ | async">
           <a routerLink="/product/edit/{{data._id}}" class="btn btn-primary">Edit</a>
           <button class="btn btn-danger" (click)="initLoginModal()">Delete</button>
         </ng-container>
         </div>
     </div>
-  </div>
+  </div> 

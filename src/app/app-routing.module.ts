@@ -14,7 +14,10 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [ AuthGuard ] },
   { path: 'register', component: RegisterComponent, canActivate: [ AuthGuard ] },
   { path: 'product/create', component: ProductCreateComponent, canActivate: [ AdminGuard ] },
-  { path: 'product/edit/:id', component: ProductCreateComponent, resolve: { product: ProductResolver }, canActivate: [ AdminGuard ] },
+  { path: 'product/edit/:id',
+    component: ProductCreateComponent,
+    resolve: { product: ProductResolver },
+    canActivate: [ AdminGuard ] },
   { path: 'product/:id', component: ProductDetailComponent, resolve: { product: ProductResolver } },
   { path: '**', redirectTo: '/' }
 ];

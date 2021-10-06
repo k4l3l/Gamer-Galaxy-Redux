@@ -20,15 +20,15 @@ export class ProductService {
     }
 
     create(data) {
-        return this.http.post<{ product: any, message: string, errors: any }>(ROUTE + 'create', data, optionsObj);
+        return this.http.post<{ product: any, message: string, errors: any }>(ROUTE, data, optionsObj);
     }
 
     edit(data) {
         const { _id: id } = data.product;
-        return this.http.patch<{ product: any, message: string, errors: any }>(ROUTE + 'edit/' + id, data.product, optionsObj);
+        return this.http.patch<{ product: any, message: string, errors: any }>(ROUTE + id, data.product, optionsObj);
     }
 
     remove(id: string) {
-        return this.http.delete<{ message: string }>(ROUTE + 'delete/' + id, optionsObj);
+        return this.http.delete<{ message: string }>(ROUTE + id, optionsObj);
     }
 }

@@ -44,7 +44,7 @@ function validateGameCreateForm(payload) {
   }
 }
 
-router.post('/create', cors(corsObj), authCheck, (req, res) => {
+router.post('/', cors(corsObj), authCheck, (req, res) => {
   const GameObj = req.body;
   if (req.user.roles.indexOf('Admin') > -1) {
     const validationResult = validateGameCreateForm(GameObj)
@@ -85,7 +85,7 @@ router.post('/create', cors(corsObj), authCheck, (req, res) => {
   }
 })
 
-router.patch('/edit/:id', cors(corsObj), authCheck, (req, res) => {
+router.patch('/:id', cors(corsObj), authCheck, (req, res) => {
   if (req.user.roles.indexOf('Admin') > -1) {
     const GameId = req.params.id
     const GameObj = req.body
@@ -342,7 +342,7 @@ router.post('/unlike/:id', cors(corsObj), authCheck, (req, res) => {
     })
 })
 
-router.delete('/delete/:id', cors(corsObj), authCheck, (req, res) => {
+router.delete('/:id', cors(corsObj), authCheck, (req, res) => {
   const id = req.params.id
   if (req.user.roles.indexOf('Admin') > -1) {
     Game
